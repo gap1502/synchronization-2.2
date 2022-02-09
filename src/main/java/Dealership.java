@@ -7,7 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Dealership {
     private static final int BUILD_TIME = 2500;
     private static final int BUY_TIME = 1000;
-    private static final int CAR = 10;
+    private static final int CAR_COUNT = 10;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
     List<Car> cars = new ArrayList<>();
@@ -18,11 +18,11 @@ public class Dealership {
     }
 
     public void receiveCar() {
-        for (int i = 1; i <= CAR; i++) {
+        for (int i = 1; i <= CAR_COUNT; i++) {
             try {
+                lock.lock();
                 Thread.sleep(BUILD_TIME);
                 cars.add(new Car());
-                lock.lock();
                 System.out.println(Thread.currentThread().getName() + " выпустил 1 авто");
                 condition.signal();
             } catch (InterruptedException e) {
